@@ -20,7 +20,12 @@ btn.addEventListener('click', async () => {
     btn.textContent = 'Play'
     btn.setAttribute('aria-label', 'Play')
   } else {
-    await start()
+    try {
+      await start()
+    } catch (err) {
+      console.error('start() failed:', err)
+      return
+    }
     btn.textContent = 'Pause'
     btn.setAttribute('aria-label', 'Pause')
   }
