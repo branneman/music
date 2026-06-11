@@ -1,0 +1,19 @@
+{
+  "name": "music",
+  "version": "1.0.0",
+  "description": "A single-page web app that plays algorithmically generated ambient / drone \"focus music\" indefinitely, entirely client-side. No backend, no network calls at runtime, no AI-generated audio — pure algorithmic composition driven by a browser synthesis engine.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/branneman/music.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0-only",
+  "type": "commonjs",
+  "homepage": "https://music.bran.name/"
+}
