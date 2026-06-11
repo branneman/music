@@ -189,8 +189,15 @@ for slow drones). A crossfade-on-swap is a deliberately deferred enhancement
 
 ### Pause / resume
 
-`engine.stop()` halts the scheduler but preserves state and the context.
-`engine.start()` resumes. Pausing does not regenerate the piece.
+`engine.stop()` fades the master gain to 0 over ~100ms (perceptually instant)
+but leaves the Strudel scheduler running. `engine.start()` fades the master
+gain back to 1. The scheduler never pauses, so resume is immediate regardless
+of where the pattern cycle is. Pausing does not regenerate the piece.
+
+**Known limitation — long idle:** while "paused," the scheduler still cycles
+and voices are synthesised silently. This is fine for brief interruptions but
+wastes CPU/battery if the tab is left paused for a long time (e.g. backgrounded
+for hours). Backlog item 13 covers a true idle mode.
 
 ### Parameter change (post-v1, but design for it now)
 

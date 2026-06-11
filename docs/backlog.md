@@ -300,3 +300,35 @@ generator internals.
   new-age; remains engaging and non-repeating across a long session.
 
 **Depends on:** 4–8 (ongoing).
+
+---
+
+## 13. True idle / background-tab pause — `TODO`
+
+**Goal:** Stop the scheduler when the page has been paused for an extended
+period, to avoid burning CPU and battery synthesising silence.
+
+**Background:** `engine.stop()` currently fades the master gain to 0 but
+keeps the Strudel scheduler running (see architecture §4). This makes
+resume instant, but it means voices are synthesised silently the whole
+time the user is "paused." For a brief interruption (phone call, colleague)
+this is fine. For a backgrounded or long-idle tab it is wasteful.
+
+**Scope:**
+
+- After the gain has faded to 0, start a timer (e.g. 30 s). If `start()`
+  has not been called by then, suspend the AudioContext or stop the
+  scheduler to save resources.
+- On `start()`: if the context was suspended, resume it and restart the
+  scheduler before fading the gain back in. The extra latency on a
+  cold-resume from deep idle is acceptable.
+- Optionally: use the Page Visibility API (`visibilitychange`) to trigger
+  deep idle immediately when the tab is hidden.
+
+**Acceptance:**
+
+- CPU usage is negligible after the idle timeout elapses.
+- Pressing play after a long idle resumes cleanly (may take up to ~1 s to
+  restart the scheduler; gain fade covers the gap).
+
+**Depends on:** 2 (engine).
