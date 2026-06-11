@@ -1,0 +1,32 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ccc;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+}
+
+#play-pause {
+  background: none;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+#play-pause:hover {
+  border-color: #888;
+  color: #fff;
+}
