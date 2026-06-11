@@ -6,7 +6,9 @@
   "directories": {
     "doc": "docs"
   },
-  "scripts": {},
+  "scripts": {
+    "vendor-samples": "node scripts/vendor-samples.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/branneman/music.git"

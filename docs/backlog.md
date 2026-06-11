@@ -170,6 +170,37 @@ spread, register/octave center, stereo width, master gain.
 
 ---
 
+## 5b. Vendor samples + industrial texture layer — `TODO`
+
+**Goal:** Download the industrial/metal sample banks, commit them, and implement
+the sample-based texture layers in `buildPattern`.
+
+**Scope:**
+
+- Run `npm run vendor-samples`. This downloads 42 files (~933 KB) from
+  Dirt-Samples into `public/samples/industrial/` and `public/samples/metal/`
+  and writes a `public/samples/strudel.json` manifest. Commit the result.
+- In `engine.js`, register samples once on startup:
+  `await samples('/samples/strudel.json')`. This call must be inside `engine.js`
+  only — no other module imports or registers samples.
+- Add two layers to `buildPattern` per the design in `docs/generative-pattern.md`:
+  - **Industrial hits layer**: `s("industrial").n(irand(32))` with heavy reverb
+    (`.room(0.96).size(0.99)`), slow presence arc, and `degradeBy(0.80)`.
+  - **Metal hits layer**: `s("metal").n(irand(10))` with cavernous reverb,
+    `speed(perlin.slow(59).range(0.3, 0.9))` for pitch variation, `degradeBy(0.86)`.
+
+**Acceptance:**
+
+- `public/samples/` is committed; `npm run build` produces a `dist/` that
+  contains all sample files.
+- With DevTools Network throttled to "Offline", samples play with no failed
+  requests.
+- Industrial and metal hits appear sparsely and unpredictably, never as a beat.
+
+**Depends on:** 1 (scaffold), 2 (engine).
+
+---
+
 ## 8. Long-horizon variation system — `TODO`
 
 **Goal:** Guarantee no perceived repetition over 12+ hours (architecture §5).

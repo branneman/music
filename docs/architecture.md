@@ -40,16 +40,24 @@ envelopes, filters with envelopes, parametric convolution reverb (`room`/`size`/
 `fade`), delay, phaser, and granular sample playback. We drive all of it
 algorithmically.
 
-### D2 — Synthesis only, no samples in v1
+### D2 — Synthesis primary; a small curated sample set is vendored locally
 
-All sound comes from `superdough`'s oscillators and noise generators. No sample
-files ship with v1. Consequences:
+The vast majority of the sound palette comes from `superdough`'s oscillators and
+noise generators. In addition, a curated set of industrial/textural samples is
+vendored into `public/samples/` and committed to the repository. These are used
+as a sparse atmospheric layer alongside the synthesized voices.
 
-- **Zero external audio assets**, so the offline requirement is satisfied by
-  construction — there is nothing to fetch.
-- Samples are a _possible_ future extension (vendored locally, never from a CDN),
-  but they are out of scope until explicitly reopened. Do not add a CDN sample
-  dependency under any circumstances.
+- **Vendored samples only.** All sample files live in `public/samples/` and are
+  downloaded once by running `npm run vendor-samples`. They are committed to the
+  repo so every build is self-contained.
+- **Zero CDN sample dependencies.** The `samples()` call in `engine.js` uses the
+  local path `/samples/strudel.json` — never a GitHub or external URL at runtime.
+  Do not introduce CDN sample loading under any circumstances.
+- **Current banks:** `industrial` (32 files, ~580 KB) and `metal` (10 files,
+  ~353 KB) from the Dirt-Samples repository. To add more banks, extend
+  `scripts/vendor-samples.mjs` and re-run the script.
+- **`engine.js` is the only sample registration site.** The `samples()` call
+  belongs there alongside the superdough import, not in the generator.
 
 ### D3 — Build with Vite; `dist/` is the artifact, `docs/` is documentation
 
