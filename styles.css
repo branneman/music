@@ -30,3 +30,7 @@ body {
   border-color: #888;
   color: #fff;
 }
+
+#play-pause:focus-visible {
+  outline: 1px solid #888;
+}

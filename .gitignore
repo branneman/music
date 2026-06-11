@@ -1,3 +1,6 @@
+# Vite build output
+dist/
+
 # node & npm
 node_modules
 .npm
