@@ -1,9 +1,9 @@
 import { start, stop, setPattern } from './engine.js'
-import { note } from '@strudel/core'
+import { note, sequence } from '@strudel/core'
 
 // Throwaway test patterns — replaced by buildPattern(params, rng) in Story 3
-const patternA = note('c3 c3 g3 c3').sound('sine').slow(8)
-const patternB = note('e3 e3 b3 e3').sound('sine').slow(8)
+const patternA = note(sequence('c3', 'c3', 'g3', 'c3')).sound('sine').slow(8)
+const patternB = note(sequence('e3', 'e3', 'b3', 'e3')).sound('sine').slow(8)
 
 setPattern(patternA)
 
