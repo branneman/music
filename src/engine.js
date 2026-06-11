@@ -2,18 +2,19 @@ import { webaudioRepl, getAudioContext, initAudio, registerSynthSounds, getSuper
 
 registerSynthSounds()
 
-const { start: _start, pause: _pause, setPattern: _setPattern } = webaudioRepl()
+const { start: _start, setPattern: _setPattern } = webaudioRepl()
 let _resumePromise = null
-let _stopTimeout = null
+let _schedulerStarted = false
 
 const _masterGain = () => getSuperdoughAudioController().output.destinationGain.gain
 
 export async function start() {
-  clearTimeout(_stopTimeout)
-  _stopTimeout = null
   _resumePromise ??= getAudioContext().resume().then(() => initAudio())
   await _resumePromise
-  await _start()
+  if (!_schedulerStarted) {
+    await _start()
+    _schedulerStarted = true
+  }
   const gain = _masterGain()
   const now = getAudioContext().currentTime
   gain.cancelScheduledValues(now)
@@ -27,7 +28,6 @@ export function stop() {
   gain.cancelScheduledValues(now)
   gain.setValueAtTime(gain.value, now)
   gain.linearRampToValueAtTime(0, now + 0.1)
-  _stopTimeout = setTimeout(() => _pause(), 110)
 }
 
 export function setPattern(pattern) {
