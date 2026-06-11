@@ -19,7 +19,7 @@ your work must respect.
 
 ---
 
-## 1. Project scaffold & offline build — `TODO`
+## 1. Project scaffold & offline build — `DONE`
 
 **Goal:** A buildable, deployable empty shell that already proves the offline and
 hosting constraints.
@@ -46,7 +46,7 @@ hosting constraints.
 
 ---
 
-## 2. Engine wrapper — `TODO`
+## 2. Engine wrapper — `DONE`
 
 **Goal:** The single audio-lifecycle module.
 
