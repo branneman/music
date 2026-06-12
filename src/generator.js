@@ -39,7 +39,7 @@ function buildSubBassLayer(zones, params, zoneLenCycles) {
 
   const buildVoice = zone => {
     const r = root(zone), f = fifth(zone)
-    const oct  = 1 + reg
+    const oct  = Math.max(0, 1 + reg)
     const fOct = Math.max(0, oct - 1)  // fifth one octave lower, min oct 0
     return note(`<${r}${oct} ${r}${oct} ${f}${fOct} ${r}${oct} ${r}${oct} ${f}${fOct}>`)
   }
@@ -116,7 +116,7 @@ function buildPadLayer(zones, params, zoneLenCycles) {
     .s('sawtooth')
     .gain(sine.slow(149).range(0, 0.12 * la))
     .attack(9).sustain(1).release(9)
-    .cutoff(perlin.slow(89).range(260, cutoffHi))
+    .cutoff(perlin.slow(97).range(260, cutoffHi))
     .resonance(2)
     .pan(perlin.slow(43).range(panLo, panHi))
     .room(params.reverbSend * 0.91).size(params.reverbSize * 0.97)
