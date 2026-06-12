@@ -91,6 +91,21 @@ The codebase is four layers (§2) with a single data-flow direction (§3). This 
 the decision that makes the future controls panel a drop-in rather than a rewrite,
 and it is the most important structural invariant in the project.
 
+### D7 — Zone voice derivation: programmatic rules, not per-zone lookup tables
+
+When building pitched-layer patterns, zone voicings (which specific notes each layer plays in a given harmonic zone) are derived programmatically from the zone's `root` and `notes` array, not looked up from a hardcoded table of mini-notation strings per zone.
+
+**What this means in practice:** each `build*Layer` function contains a small rule function that maps a zone object to a note string. For example, the sub-bass rule takes index 0 (root) and index 2 (fifth) from the zone's note array. The caller passes a zone object; the layer function produces the correct notes automatically.
+
+**Why:** lower maintenance burden as zones accumulate. Adding a new zone is one data entry (`{ id, root, notes }`) in `HARMONIC_ZONES`; all layer rules derive correct voicings without any per-layer edits. The alternative — a lookup table of hardcoded strings per zone × per layer — requires hand-authoring voice strings for every new zone × every layer, which becomes error-prone as layers multiply.
+
+**The risk this introduces:** the rule functions assume a consistent interval structure across modes — specifically, that the same scale-degree indices map to the same intervals (e.g. index 2 is always the 5th). This holds for all five current zones (D Aeolian, D Dorian, A Aeolian, E Phrygian, G Aeolian), which are all natural-minor-family modes. It would break for a mode with a different interval layout (e.g. Lydian, where the 5th is at a different degree).
+
+**How to guard against this:**
+- Each zone in `HARMONIC_ZONES` carries an explicit `notes` array, so the interval contract is auditable at a glance.
+- When adding a zone, verify the derived voice pools by ear or by printing them before committing. If a zone's interval layout breaks a rule (e.g. the "fifth" at index 2 is actually a tritone), override it with an explicit `voiceOverride` field on the zone object rather than generalising the rule.
+- Keep rule functions small enough to read in one glance — if a rule grows beyond ~3 lines, it is likely encoding an assumption that should instead be explicit data on the zone.
+
 ### D6 — Determinism via a seeded, cycle-driven PRNG
 
 Randomness comes from a seeded PRNG whose stream is a function of cycle number
