@@ -54,10 +54,50 @@ function buildSubBassLayer(zones, params, zoneLenCycles) {
     .orbit(1)
 }
 
+function buildDroneLayer(zones, params, zoneLenCycles) {
+  const reg     = Math.round(Math.max(-2, Math.min(2, params.register)))
+  const la      = params.layerActivity * params.droneDensity
+  const dw      = params.detuneSpread
+  const sw      = params.stereoWidth
+
+  const buildVoice = zone => {
+    const r = root(zone), f = fifth(zone), sv = seventh(zone)
+    const oct = 2 + reg
+    return note(
+      `<${r}${oct} ${r}${oct} ${f}${oct} ${r}${oct + 1} ${sv}${oct} ${f}${oct} ${r}${oct} ${r}${oct + 1}>`
+    )
+  }
+
+  const seq  = zonePattern(zones, buildVoice, 277, zoneLenCycles)
+  const panA = 0.5 + (0.40 - 0.5) * sw
+  const panB = 0.5 + (0.60 - 0.5) * sw
+
+  const droneA = seq
+    .s('sine')
+    .gain(sine.slow(127).range(0, 0.36 * la))
+    .attack(12).sustain(1).release(10)
+    .detune(perlin.slow(53).range(-8 * dw, 8 * dw))
+    .pan(panA)
+    .room(params.reverbSend * 0.99).size(params.reverbSize * 0.98)
+    .orbit(1)
+
+  const droneB = seq
+    .s('sine')
+    .gain(sine.slow(163).range(0, 0.28 * la))
+    .attack(14).sustain(1).release(10)
+    .detune(perlin.slow(37).range(6 * dw, 22 * dw))
+    .pan(panB)
+    .room(params.reverbSend * 0.99).size(params.reverbSize * 0.98)
+    .orbit(1)
+
+  return stack(droneA, droneB)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
   return stack(
     buildSubBassLayer(zones, params, zoneLenCycles),
+    buildDroneLayer(zones, params, zoneLenCycles),
   )
 }
