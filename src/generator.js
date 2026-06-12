@@ -150,6 +150,31 @@ function buildFmSwellLayer(zones, params, zoneLenCycles) {
     .orbit(3)
 }
 
+function buildShimmerLayer(zones, params, zoneLenCycles) {
+  const reg     = Math.round(Math.max(-2, Math.min(2, params.register)))
+  const la      = params.layerActivity * params.droneDensity
+  const dw      = params.detuneSpread
+  const sw      = params.stereoWidth
+
+  const buildVoice = zone => {
+    const f = fifth(zone), sv = seventh(zone), ni = ninth(zone)
+    const oct = 4 + reg
+    return note(`<${f}${oct} ${ni}${oct} ${sv}${oct} ${f}${oct + 1} ${ni}${oct} ${sv}${oct + 1}>`)
+  }
+
+  const panLo = 0.5 + (0.12 - 0.5) * sw
+  const panHi = 0.5 + (0.88 - 0.5) * sw
+
+  return zonePattern(zones, buildVoice, 641, zoneLenCycles)
+    .s('sine')
+    .gain(sine.slow(211).range(0, 0.09 * la))
+    .attack(16).sustain(0.8).release(14)
+    .detune(perlin.slow(61).range(-22 * dw, 22 * dw))
+    .pan(perlin.slow(29).range(panLo, panHi))
+    .room(params.reverbSend * 0.97).size(params.reverbSize * 0.99)
+    .orbit(4)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
@@ -158,5 +183,6 @@ export function buildPattern(params, rng) {
     buildDroneLayer(zones, params, zoneLenCycles),
     buildPadLayer(zones, params, zoneLenCycles),
     buildFmSwellLayer(zones, params, zoneLenCycles),
+    buildShimmerLayer(zones, params, zoneLenCycles),
   )
 }
