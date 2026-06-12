@@ -2,16 +2,16 @@ import { start, stop, setPattern } from './engine.js'
 import { buildPattern } from './generator.js'
 import { createRng } from './rng.js'
 import { params, set, subscribe } from './params.js'
+import { silence } from '@strudel/core'
 
 // Fixed seed — every page load plays the same piece. Randomise in a future story.
 const rng = createRng(12345)
 
 function applyPattern(snapshot) {
-  const p = buildPattern(snapshot, rng)
-  if (p) setPattern(p)
+  setPattern(buildPattern(snapshot, rng) ?? silence)
 }
 
-applyPattern(params)  // no-op until generator.js is implemented (Stories 4–7)
+applyPattern(params)
 subscribe(applyPattern)
 
 // Dev helpers — test from the browser console:
