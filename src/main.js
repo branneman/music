@@ -3,6 +3,7 @@ import { buildPattern } from './generator.js'
 import { createRng } from './rng.js'
 import { params, set, subscribe } from './params.js'
 
+// Fixed seed — every page load plays the same piece. Randomise in a future story.
 const rng = createRng(12345)
 
 function applyPattern(snapshot) {
@@ -10,7 +11,7 @@ function applyPattern(snapshot) {
   if (p) setPattern(p)
 }
 
-applyPattern(params)
+applyPattern(params)  // no-op until generator.js is implemented (Stories 4–7)
 subscribe(applyPattern)
 
 // Dev helpers — test from the browser console:
