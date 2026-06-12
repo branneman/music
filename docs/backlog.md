@@ -67,7 +67,7 @@ hosting constraints.
 
 ---
 
-## 3. Params model — `TODO`
+## 3. Params model — `DONE`
 
 **Goal:** The single source of truth for everything tunable.
 
