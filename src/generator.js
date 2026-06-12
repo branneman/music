@@ -41,7 +41,7 @@ function buildSubBassLayer(zones, params, zoneLenCycles) {
     const r = root(zone), f = fifth(zone)
     const oct  = Math.max(0, 1 + reg)
     const fOct = Math.max(0, oct - 1)  // fifth one octave lower, min oct 0
-    return note(`<${r}${oct} ${r}${oct} ${f}${fOct} ${r}${oct} ${r}${oct} ${f}${fOct}>`)
+    return note(`${r}${oct} ${r}${oct} ${f}${fOct} ${r}${oct} ${r}${oct} ${f}${fOct}`)
   }
 
   return zonePattern(zones, buildVoice, 277, zoneLenCycles)
@@ -64,7 +64,7 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
     const r = root(zone), f = fifth(zone), sv = seventh(zone)
     const oct = 2 + reg
     return note(
-      `<${r}${oct} ${r}${oct} ${f}${oct} ${r}${oct + 1} ${sv}${oct} ${f}${oct} ${r}${oct} ${r}${oct + 1}>`
+      `${r}${oct} ${r}${oct} ${f}${oct} ${r}${oct + 1} ${sv}${oct} ${f}${oct} ${r}${oct} ${r}${oct + 1}`
     )
   }
 
@@ -102,9 +102,9 @@ function buildPadLayer(zones, params, zoneLenCycles) {
     const r = root(zone), f = fifth(zone), sv = seventh(zone), ni = ninth(zone)
     const oct = 3 + reg
     return note(
-      `<[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct + 1}] ` +
+      `[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct + 1}] ` +
       `[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct}] ` +
-      `[${r}${oct},${sv}${oct},${ni}${oct},${r}${oct + 1}]>`
+      `[${r}${oct},${sv}${oct},${ni}${oct},${r}${oct + 1}]`
     )
   }
 
@@ -131,7 +131,7 @@ function buildFmSwellLayer(zones, params, zoneLenCycles) {
   const buildVoice = zone => {
     const r = root(zone), fo = fourth(zone), f = fifth(zone), sv = seventh(zone)
     const oct = 3 + reg
-    return note(`<${r}${oct} ${fo}${oct} ${f}${oct} ${sv}${oct} ${r}${oct}>`)
+    return note(`${r}${oct} ${fo}${oct} ${f}${oct} ${sv}${oct} ${r}${oct}`)
   }
 
   const cutoffHi = Math.max(420, 2200 * (1 + params.brightness))
@@ -159,7 +159,7 @@ function buildShimmerLayer(zones, params, zoneLenCycles) {
   const buildVoice = zone => {
     const f = fifth(zone), sv = seventh(zone), ni = ninth(zone)
     const oct = 4 + reg
-    return note(`<${f}${oct} ${ni}${oct} ${sv}${oct} ${f}${oct + 1} ${ni}${oct} ${sv}${oct + 1}>`)
+    return note(`${f}${oct} ${ni}${oct} ${sv}${oct} ${f}${oct + 1} ${ni}${oct} ${sv}${oct + 1}`)
   }
 
   const panLo = 0.5 + (0.12 - 0.5) * sw
