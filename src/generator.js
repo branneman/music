@@ -32,8 +32,32 @@ function zonePattern(zones, buildVoice, notePeriod, zoneLenCycles) {
   return cat(...zones.map(z => buildVoice(z).slow(ta))).slow(S)
 }
 
+function buildSubBassLayer(zones, params, zoneLenCycles) {
+  const reg     = Math.round(Math.max(-2, Math.min(2, params.register)))
+  const maxGain = 0.42 * params.layerActivity * params.droneDensity
+  const dw      = params.detuneSpread
+
+  const buildVoice = zone => {
+    const r = root(zone), f = fifth(zone)
+    const oct  = 1 + reg
+    const fOct = Math.max(0, oct - 1)  // fifth one octave lower, min oct 0
+    return note(`<${r}${oct} ${r}${oct} ${f}${fOct} ${r}${oct} ${r}${oct} ${f}${fOct}>`)
+  }
+
+  return zonePattern(zones, buildVoice, 277, zoneLenCycles)
+    .s('sine')
+    .gain(sine.slow(191).range(0, maxGain))
+    .attack(18).sustain(1).release(16)
+    .detune(perlin.slow(67).range(-4 * dw, 4 * dw))
+    .pan(0.5)
+    .room(params.reverbSend).size(params.reverbSize)
+    .orbit(1)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
-  return stack()  // placeholder — filled out task by task
+  return stack(
+    buildSubBassLayer(zones, params, zoneLenCycles),
+  )
 }
