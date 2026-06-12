@@ -1,15 +1,25 @@
 import { start, stop, setPattern } from './engine.js'
-import { note, sequence } from '@strudel/core'
+import { buildPattern } from './generator.js'
+import { createRng } from './rng.js'
+import { params, set, subscribe } from './params.js'
 
-// Throwaway test patterns — replaced by buildPattern(params, rng) in Story 3
-const patternA = note(sequence('c3', 'c3', 'g3', 'c3')).sound('sine').slow(8)
-const patternB = note(sequence('e3', 'e3', 'b3', 'e3')).sound('sine').slow(8)
+const rng = createRng(12345)
 
-setPattern(patternA)
+function applyPattern(snapshot) {
+  const p = buildPattern(snapshot, rng)
+  if (p) setPattern(p)
+}
 
-// Run from browser console to verify live swap: _swapPattern()
-window._swapPattern = () => setPattern(patternB)
-window._swapBack = () => setPattern(patternA)
+applyPattern(params)
+subscribe(applyPattern)
+
+// Dev helpers — test from the browser console:
+//   window._rng.at(0)              → float in [0, 1)
+//   window._set('reverbSize', 0.5) → updates params + fires subscribe
+//   window._getParams()            → current params snapshot
+window._rng = rng
+window._set = set
+window._getParams = () => params
 
 const btn = document.getElementById('play-pause')
 let playing = false
