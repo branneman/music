@@ -123,6 +123,33 @@ function buildPadLayer(zones, params, zoneLenCycles) {
     .orbit(2)
 }
 
+function buildFmSwellLayer(zones, params, zoneLenCycles) {
+  const reg     = Math.round(Math.max(-2, Math.min(2, params.register)))
+  const la      = params.layerActivity * params.droneDensity
+  const sw      = params.stereoWidth
+
+  const buildVoice = zone => {
+    const r = root(zone), fo = fourth(zone), f = fifth(zone), sv = seventh(zone)
+    const oct = 3 + reg
+    return note(`<${r}${oct} ${fo}${oct} ${f}${oct} ${sv}${oct} ${r}${oct}>`)
+  }
+
+  const cutoffHi = Math.max(420, 2200 * (1 + params.brightness))
+  const panLo    = 0.5 + (0.2 - 0.5) * sw
+  const panHi    = 0.5 + (0.8 - 0.5) * sw
+
+  return zonePattern(zones, buildVoice, 337, zoneLenCycles)
+    .s('sine')
+    .fm(perlin.slow(73).range(0.5, 4))
+    .fmh(perlin.slow(83).range(0.3, 2))
+    .gain(sine.slow(89).range(0, 0.18 * la))
+    .attack(11).sustain(1).release(13)
+    .cutoff(perlin.slow(73).range(400, cutoffHi))
+    .pan(perlin.slow(47).range(panLo, panHi))
+    .room(params.reverbSend * 0.94).size(params.reverbSize * 0.98)
+    .orbit(3)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
@@ -130,5 +157,6 @@ export function buildPattern(params, rng) {
     buildSubBassLayer(zones, params, zoneLenCycles),
     buildDroneLayer(zones, params, zoneLenCycles),
     buildPadLayer(zones, params, zoneLenCycles),
+    buildFmSwellLayer(zones, params, zoneLenCycles),
   )
 }
