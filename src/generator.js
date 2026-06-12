@@ -93,11 +93,42 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
   return stack(droneA, droneB)
 }
 
+function buildPadLayer(zones, params, zoneLenCycles) {
+  const reg     = Math.round(Math.max(-2, Math.min(2, params.register)))
+  const la      = params.layerActivity * params.droneDensity
+  const sw      = params.stereoWidth
+
+  const buildVoice = zone => {
+    const r = root(zone), f = fifth(zone), sv = seventh(zone), ni = ninth(zone)
+    const oct = 3 + reg
+    return note(
+      `<[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct + 1}] ` +
+      `[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct}] ` +
+      `[${r}${oct},${sv}${oct},${ni}${oct},${r}${oct + 1}]>`
+    )
+  }
+
+  const cutoffHi = Math.max(280, 1500 * (1 + params.brightness))
+  const panLo    = 0.5 + (0.28 - 0.5) * sw
+  const panHi    = 0.5 + (0.72 - 0.5) * sw
+
+  return zonePattern(zones, buildVoice, 421, zoneLenCycles)
+    .s('sawtooth')
+    .gain(sine.slow(149).range(0, 0.12 * la))
+    .attack(9).sustain(1).release(9)
+    .cutoff(perlin.slow(89).range(260, cutoffHi))
+    .resonance(2)
+    .pan(perlin.slow(43).range(panLo, panHi))
+    .room(params.reverbSend * 0.91).size(params.reverbSize * 0.97)
+    .orbit(2)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
   return stack(
     buildSubBassLayer(zones, params, zoneLenCycles),
     buildDroneLayer(zones, params, zoneLenCycles),
+    buildPadLayer(zones, params, zoneLenCycles),
   )
 }
