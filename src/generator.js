@@ -41,7 +41,8 @@ function buildSubBassLayer(zones, params, zoneLenCycles) {
     const r = root(zone), f = fifth(zone)
     const oct  = Math.max(0, 1 + reg)
     const fOct = Math.max(0, oct - 1)  // fifth one octave lower, min oct 0
-    return note(`${r}${oct} ${r}${oct} ${f}${fOct} ${r}${oct} ${r}${oct} ${f}${fOct}`)
+    return cat(note(`${r}${oct}`), note(`${r}${oct}`), note(`${f}${fOct}`),
+               note(`${r}${oct}`), note(`${r}${oct}`), note(`${f}${fOct}`))
   }
 
   return zonePattern(zones, buildVoice, 277, zoneLenCycles)
@@ -63,9 +64,9 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
   const buildVoice = zone => {
     const r = root(zone), f = fifth(zone), sv = seventh(zone)
     const oct = 2 + reg
-    return note(
-      `${r}${oct} ${r}${oct} ${f}${oct} ${r}${oct + 1} ${sv}${oct} ${f}${oct} ${r}${oct} ${r}${oct + 1}`
-    )
+    return cat(note(`${r}${oct}`), note(`${r}${oct}`), note(`${f}${oct}`),
+               note(`${r}${oct + 1}`), note(`${sv}${oct}`), note(`${f}${oct}`),
+               note(`${r}${oct}`), note(`${r}${oct + 1}`))
   }
 
   const seq  = zonePattern(zones, buildVoice, 277, zoneLenCycles)
@@ -101,10 +102,10 @@ function buildPadLayer(zones, params, zoneLenCycles) {
   const buildVoice = zone => {
     const r = root(zone), f = fifth(zone), sv = seventh(zone), ni = ninth(zone)
     const oct = 3 + reg
-    return note(
-      `[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct + 1}] ` +
-      `[${r}${oct},${f}${oct},${sv}${oct},${ni}${oct}] ` +
-      `[${r}${oct},${sv}${oct},${ni}${oct},${r}${oct + 1}]`
+    return cat(
+      stack(note(`${r}${oct}`), note(`${f}${oct}`), note(`${sv}${oct}`), note(`${ni}${oct + 1}`)),
+      stack(note(`${r}${oct}`), note(`${f}${oct}`), note(`${sv}${oct}`), note(`${ni}${oct}`)),
+      stack(note(`${r}${oct}`), note(`${sv}${oct}`), note(`${ni}${oct}`), note(`${r}${oct + 1}`))
     )
   }
 
@@ -131,7 +132,8 @@ function buildFmSwellLayer(zones, params, zoneLenCycles) {
   const buildVoice = zone => {
     const r = root(zone), fo = fourth(zone), f = fifth(zone), sv = seventh(zone)
     const oct = 3 + reg
-    return note(`${r}${oct} ${fo}${oct} ${f}${oct} ${sv}${oct} ${r}${oct}`)
+    return cat(note(`${r}${oct}`), note(`${fo}${oct}`), note(`${f}${oct}`),
+               note(`${sv}${oct}`), note(`${r}${oct}`))
   }
 
   const cutoffHi = Math.max(420, 2200 * (1 + params.brightness))
@@ -159,7 +161,8 @@ function buildShimmerLayer(zones, params, zoneLenCycles) {
   const buildVoice = zone => {
     const f = fifth(zone), sv = seventh(zone), ni = ninth(zone)
     const oct = 4 + reg
-    return note(`${f}${oct} ${ni}${oct} ${sv}${oct} ${f}${oct + 1} ${ni}${oct} ${sv}${oct + 1}`)
+    return cat(note(`${f}${oct}`), note(`${ni}${oct}`), note(`${sv}${oct}`),
+               note(`${f}${oct + 1}`), note(`${ni}${oct}`), note(`${sv}${oct + 1}`))
   }
 
   const panLo = 0.5 + (0.12 - 0.5) * sw
