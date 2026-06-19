@@ -1,4 +1,4 @@
-import { note, stack, cat, sine, perlin } from '@strudel/core'
+import { note, stack, cat, sine, perlin, s, irand, rand } from '@strudel/core'
 
 const HARMONIC_ZONES = [
   { id: 'd-aeolian',  root: 'd', notes: ['d','f','a','c','e','g']       },
@@ -176,6 +176,17 @@ function buildShimmerLayer(zones, params, zoneLenCycles) {
     .pan(perlin.slow(29).range(panLo, panHi))
     .room(params.reverbSend * 0.97).size(params.reverbSize * 0.99)
     .orbit(4)
+}
+
+function buildNoiseAtmosphereLayer(params) {
+  const cutoffHi = Math.max(250, 480 * (1 + params.brightness))
+  return s("brown")
+    .gain(perlin.slow(151).range(0, 0.14 * params.noiseLevel))
+    .cutoff(perlin.slow(107).range(100, cutoffHi))
+    .resonance(1.5)
+    .attack(2).sustain(1).release(2)
+    .pan(0.5)
+    .room(0.55).size(0.68).orbit(5)
 }
 
 export function buildPattern(params, rng) {
