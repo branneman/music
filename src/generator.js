@@ -189,6 +189,15 @@ function buildNoiseAtmosphereLayer(params) {
     .room(0.55).size(0.68).orbit(5)
 }
 
+function buildIndustrialLayer(params) {
+  return s("industrial").n(irand(32))
+    .gain(sine.slow(173).range(0, 0.28 * params.layerActivity))
+    .speed(perlin.slow(101).range(0.35, 0.95))
+    .pan(rand.range(0.05, 0.95))
+    .room(0.96).size(0.99).orbit(7)
+    .degradeBy(0.80).slow(113)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
