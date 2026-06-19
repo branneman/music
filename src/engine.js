@@ -1,6 +1,7 @@
-import { webaudioRepl, getAudioContext, initAudio, registerSynthSounds, getSuperdoughAudioController } from '@strudel/webaudio'
+import { webaudioRepl, getAudioContext, initAudio, registerSynthSounds, getSuperdoughAudioController, samples } from '@strudel/webaudio'
 
 registerSynthSounds()
+samples('/samples/strudel.json')
 
 const { start: _start, setPattern: _setPattern } = webaudioRepl()
 let _resumePromise = null
