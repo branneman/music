@@ -198,6 +198,15 @@ function buildIndustrialLayer(params) {
     .degradeBy(0.80).slow(113)
 }
 
+function buildMetalLayer(params) {
+  return s("metal").n(irand(10))
+    .gain(perlin.slow(157).range(0.05, 0.20 * params.layerActivity))
+    .speed(perlin.slow(59).range(0.25, 0.80))
+    .pan(rand.range(0.1, 0.9))
+    .room(0.97).size(0.99).orbit(8)
+    .degradeBy(0.86).slow(79)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
@@ -207,5 +216,8 @@ export function buildPattern(params, rng) {
     buildPadLayer(zones, params, zoneLenCycles),
     buildFmSwellLayer(zones, params, zoneLenCycles),
     buildShimmerLayer(zones, params, zoneLenCycles),
+    buildNoiseAtmosphereLayer(params),
+    buildIndustrialLayer(params),
+    buildMetalLayer(params),
   )
 }
