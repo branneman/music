@@ -93,7 +93,7 @@ spread, register/octave center, stereo width, master gain.
 
 ---
 
-## 4. Harmonic / drone core — `TODO`
+## 4. Harmonic / drone core — `DONE`
 
 **Goal:** The sustained foundation: layered, detuned, slowly-moving tones.
 
@@ -113,7 +113,7 @@ spread, register/octave center, stereo width, master gain.
 
 ---
 
-## 5. Texture / atmosphere layer — `TODO`
+## 5. Texture / atmosphere layer — `DONE`
 
 **Goal:** The underlying noisy/textural bed.
 
@@ -132,7 +132,7 @@ spread, register/octave center, stereo width, master gain.
 
 ---
 
-## 6. Sparse event layer — `TODO`
+## 6. Sparse event layer — `DONE`
 
 **Goal:** Occasional melodic/percussive events emerging from the texture.
 
@@ -170,7 +170,7 @@ spread, register/octave center, stereo width, master gain.
 
 ---
 
-## 5b. Vendor samples + industrial texture layer — `TODO`
+## 5b. Vendor samples + industrial texture layer — `DONE`
 
 **Goal:** Download the industrial/metal sample banks, commit them, and implement
 the sample-based texture layers in `buildPattern`.
