@@ -179,6 +179,7 @@ function buildShimmerLayer(zones, params, zoneLenCycles) {
     .detune(perlin.slow(61).range(-22 * dw, 22 * dw))
     .pan(perlin.slow(29).range(panLo, panHi))
     .room(params.reverbSend * 0.97).size(params.reverbSize * 0.99)
+    .delay(0.18).delaytime(0.11).delayfeedback(0.46)
     .orbit(4)
 }
 
