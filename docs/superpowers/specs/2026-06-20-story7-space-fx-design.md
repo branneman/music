@@ -49,16 +49,13 @@ of 1 s) and distinct from each other. Feedback stays below 0.5.
 
 | Layer | `.delay()` | `.delaytime()` | `.delayfeedback()` | `.fade()` |
 |-------|-----------|---------------|-------------------|-----------|
-| Drone A | 0.14 | 2.3 s | 0.38 | 4.0 |
-| Drone B | 0.12 | 1.9 s | 0.34 | 4.0 |
-| Pad | 0.10 | 1.7 s | 0.30 | 3.0 |
-| FM swell | 0.07 | 1.3 s | 0.26 | — |
-| Shimmer | 0.18 | 0.11 s | 0.46 | — |
+| Drone A | 0.14 | 2.3 s | 0.38 |
+| Drone B | 0.12 | 1.9 s | 0.34 |
+| Pad | 0.10 | 1.7 s | 0.30 |
+| FM swell | 0.07 | 1.3 s | 0.26 |
+| Shimmer | 0.18 | 0.11 s | 0.46 |
 
-`.fade()` controls how quickly the convolution reverb tail builds — it makes
-the reverb bloom from silence rather than snap in. On sustained drone layers
-this softens zone-boundary transitions. Not applied to FM swell or shimmer
-where the existing ADSR envelope already handles the tail shape.
+`.fade()` was excluded: it is not a chainable method in `@strudel/core`'s pattern API.
 
 No LFO periods are introduced — all values are constants. No entries needed in
 the period tables in `generative-pattern.md`.
@@ -71,8 +68,8 @@ the period tables in `generative-pattern.md`.
 
 Four function bodies change; no new functions, no new imports:
 
-- **`buildDroneLayer`**: `droneA` gains `.delay(0.14).delaytime(2.3).delayfeedback(0.38).fade(4.0)`; `droneB` gains `.delay(0.12).delaytime(1.9).delayfeedback(0.34).fade(4.0)`
-- **`buildPadLayer`**: gains `.delay(0.10).delaytime(1.7).delayfeedback(0.30).fade(3.0)`
+- **`buildDroneLayer`**: `droneA` gains `.delay(0.14).delaytime(2.3).delayfeedback(0.38)`; `droneB` gains `.delay(0.12).delaytime(1.9).delayfeedback(0.34)`
+- **`buildPadLayer`**: gains `.delay(0.10).delaytime(1.7).delayfeedback(0.30)`
 - **`buildFmSwellLayer`**: gains `.delay(0.07).delaytime(1.3).delayfeedback(0.26)`
 - **`buildShimmerLayer`**: gains `.delay(0.18).delaytime(0.11).delayfeedback(0.46)`
 

@@ -162,15 +162,15 @@ All periods below are in cycles (= seconds at cps=1). All are prime.
 
 These are fixed constants, not LFO-driven. No entry in the period table is needed.
 Delay times are non-rhythmic at cps=1 and distinct from each other. Feedback < 0.5
-prevents runaway build-up. `.fade()` is the reverb-tail bloom time (seconds).
+prevents runaway build-up. Note: `.fade()` is NOT a valid Strudel pattern method.
 
-| Layer | `.delay()` wet | `.delaytime()` s | `.delayfeedback()` | `.fade()` s |
-|-------|---------------|-----------------|-------------------|------------|
-| Drone A | 0.14 | 2.3 | 0.38 | 4.0 |
-| Drone B | 0.12 | 1.9 | 0.34 | 4.0 |
-| Pad | 0.10 | 1.7 | 0.30 | 3.0 |
-| FM swell | 0.07 | 1.3 | 0.26 | — |
-| Shimmer | 0.18 | 0.11 | 0.46 | — |
+| Layer | `.delay()` wet | `.delaytime()` s | `.delayfeedback()` |
+|-------|---------------|-----------------|-------------------|
+| Drone A | 0.14 | 2.3 | 0.38 |
+| Drone B | 0.12 | 1.9 | 0.34 |
+| Pad | 0.10 | 1.7 | 0.30 |
+| FM swell | 0.07 | 1.3 | 0.26 |
+| Shimmer | 0.18 | 0.11 | 0.46 |
 
 All other layers (sub bass, noise, sparse events, industrial, metal): no delay.
 
