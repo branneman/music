@@ -79,7 +79,8 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
     .attack(12).sustain(1).release(10)
     .detune(perlin.slow(53).range(-8 * dw, 8 * dw))
     .pan(panA)
-    .room(params.reverbSend * 0.99).size(params.reverbSize * 0.98)
+    .room(params.reverbSend * 0.99).size(params.reverbSize * 0.98).fade(4.0)
+    .delay(0.14).delaytime(2.3).delayfeedback(0.38)
     .orbit(1)
 
   const droneB = seq
@@ -88,7 +89,8 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
     .attack(14).sustain(1).release(10)
     .detune(perlin.slow(37).range(6 * dw, 22 * dw))
     .pan(panB)
-    .room(params.reverbSend * 0.99).size(params.reverbSize * 0.98)
+    .room(params.reverbSend * 0.99).size(params.reverbSize * 0.98).fade(4.0)
+    .delay(0.12).delaytime(1.9).delayfeedback(0.34)
     .orbit(1)
 
   return stack(droneA, droneB)
