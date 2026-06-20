@@ -122,7 +122,8 @@ function buildPadLayer(zones, params, zoneLenCycles) {
     .cutoff(perlin.slow(97).range(260, cutoffHi))
     .resonance(2)
     .pan(perlin.slow(43).range(panLo, panHi))
-    .room(params.reverbSend * 0.91).size(params.reverbSize * 0.97)
+    .room(params.reverbSend * 0.91).size(params.reverbSize * 0.97).fade(3.0)
+    .delay(0.10).delaytime(1.7).delayfeedback(0.30)
     .orbit(2)
 }
 
@@ -151,6 +152,7 @@ function buildFmSwellLayer(zones, params, zoneLenCycles) {
     .cutoff(perlin.slow(73).range(400, cutoffHi))
     .pan(perlin.slow(47).range(panLo, panHi))
     .room(params.reverbSend * 0.94).size(params.reverbSize * 0.98)
+    .delay(0.07).delaytime(1.3).delayfeedback(0.26)
     .orbit(3)
 }
 
