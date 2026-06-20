@@ -207,6 +207,26 @@ function buildMetalLayer(params) {
     .degradeBy(0.86).slow(79)
 }
 
+function buildSparseEventLayer(zones, params, zoneLenCycles) {
+  const reg = Math.round(Math.max(-2, Math.min(2, params.register)))
+
+  const buildVoice = zone => {
+    const oct = 3 + reg
+    const lo  = zone.notes.map(n => note(`${n}${oct}`))
+    const hi  = [note(`${root(zone)}${oct+1}`), note(`${fifth(zone)}${oct+1}`), note(`${seventh(zone)}${oct+1}`)]
+    return cat(...lo, ...hi)
+  }
+
+  return zonePattern(zones, buildVoice, 103, zoneLenCycles)
+    .s('sine')
+    .gain(perlin.slow(41).range(0.10, 0.24 * params.layerActivity))
+    .attack(0.5).sustain(1).release(perlin.slow(19).range(2, 12))
+    .pan(rand.range(0.12, 0.88))
+    .room(params.reverbSend * 0.97).size(params.reverbSize * 0.99)
+    .orbit(6)
+    .degradeBy(params.eventSparsity)
+}
+
 export function buildPattern(params, rng) {
   const zoneLenCycles = Math.round(1801 / params.harmonicRate)
   const zones = buildZoneSeq(rng)
@@ -217,6 +237,7 @@ export function buildPattern(params, rng) {
     buildFmSwellLayer(zones, params, zoneLenCycles),
     buildShimmerLayer(zones, params, zoneLenCycles),
     buildNoiseAtmosphereLayer(params),
+    buildSparseEventLayer(zones, params, zoneLenCycles),
     buildIndustrialLayer(params),
     buildMetalLayer(params),
   )
