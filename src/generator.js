@@ -45,9 +45,9 @@ function buildSubBassLayer(zones, params, zoneLenCycles) {
                note(`${r}${oct}`), note(`${r}${oct}`), note(`${f}${fOct}`))
   }
 
-  return zonePattern(zones, buildVoice, 277, zoneLenCycles)
+  return zonePattern(zones, buildVoice, 139, zoneLenCycles)
     .s('sine')
-    .gain(sine.slow(191).range(maxGain * 0.2, maxGain))
+    .gain(sine.slow(191).range(maxGain * 0.3, maxGain))
     .attack(18).sustain(1).release(16)
     .detune(perlin.slow(67).range(-4 * dw, 4 * dw))
     .pan(0.5)
@@ -69,13 +69,13 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
                note(`${r}${oct}`), note(`${r}${oct + 1}`))
   }
 
-  const seq  = zonePattern(zones, buildVoice, 277, zoneLenCycles)
+  const seq  = zonePattern(zones, buildVoice, 139, zoneLenCycles)
   const panA = 0.5 + (0.40 - 0.5) * sw
   const panB = 0.5 + (0.60 - 0.5) * sw
 
   const droneA = seq
     .s('sine')
-    .gain(sine.slow(127).range(0.072 * la, 0.36 * la))
+    .gain(sine.slow(127).range(0.108 * la, 0.36 * la))
     .attack(12).sustain(1).release(10)
     .detune(perlin.slow(53).range(-8 * dw, 8 * dw))
     .pan(panA)
@@ -85,7 +85,7 @@ function buildDroneLayer(zones, params, zoneLenCycles) {
 
   const droneB = seq
     .s('sine')
-    .gain(sine.slow(163).range(0.056 * la, 0.28 * la))
+    .gain(sine.slow(163).range(0.084 * la, 0.28 * la))
     .attack(14).sustain(1).release(10)
     .detune(perlin.slow(37).range(6 * dw, 22 * dw))
     .pan(panB)
@@ -115,9 +115,9 @@ function buildPadLayer(zones, params, zoneLenCycles) {
   const panLo    = 0.5 + (0.28 - 0.5) * sw
   const panHi    = 0.5 + (0.72 - 0.5) * sw
 
-  return zonePattern(zones, buildVoice, 421, zoneLenCycles)
+  return zonePattern(zones, buildVoice, 211, zoneLenCycles)
     .s('sawtooth')
-    .gain(sine.slow(149).range(0.024 * la, 0.12 * la))
+    .gain(sine.slow(149).range(0.036 * la, 0.12 * la))
     .attack(9).sustain(1).release(9)
     .cutoff(perlin.slow(97).range(260, cutoffHi))
     .resonance(2)
@@ -143,11 +143,11 @@ function buildFmSwellLayer(zones, params, zoneLenCycles) {
   const panLo    = 0.5 + (0.2 - 0.5) * sw
   const panHi    = 0.5 + (0.8 - 0.5) * sw
 
-  return zonePattern(zones, buildVoice, 337, zoneLenCycles)
+  return zonePattern(zones, buildVoice, 169, zoneLenCycles)
     .s('sine')
     .fm(perlin.slow(73).range(0.5, 4))
     .fmh(perlin.slow(83).range(0.3, 2))
-    .gain(sine.slow(89).range(0.036 * la, 0.18 * la))
+    .gain(sine.slow(89).range(0.054 * la, 0.18 * la))
     .attack(11).sustain(1).release(13)
     .cutoff(perlin.slow(73).range(400, cutoffHi))
     .pan(perlin.slow(47).range(panLo, panHi))
@@ -172,9 +172,9 @@ function buildShimmerLayer(zones, params, zoneLenCycles) {
   const panLo = 0.5 + (0.12 - 0.5) * sw
   const panHi = 0.5 + (0.88 - 0.5) * sw
 
-  return zonePattern(zones, buildVoice, 641, zoneLenCycles)
+  return zonePattern(zones, buildVoice, 321, zoneLenCycles)
     .s('sine')
-    .gain(sine.slow(211).range(0.018 * la, 0.09 * la))
+    .gain(sine.slow(211).range(0.027 * la, 0.09 * la))
     .attack(16).sustain(0.8).release(14)
     .detune(perlin.slow(61).range(-22 * dw, 22 * dw))
     .pan(perlin.slow(29).range(panLo, panHi))
@@ -186,7 +186,7 @@ function buildShimmerLayer(zones, params, zoneLenCycles) {
 function buildNoiseAtmosphereLayer(params) {
   const cutoffHi = Math.max(250, 480 * (1 + params.brightness))
   return s("brown")
-    .gain(perlin.slow(151).range(0.028 * params.noiseLevel, 0.14 * params.noiseLevel))
+    .gain(perlin.slow(151).range(0.042 * params.noiseLevel, 0.14 * params.noiseLevel))
     .cutoff(perlin.slow(107).range(100, cutoffHi))
     .resonance(1.5)
     .attack(2).sustain(1).release(2)
